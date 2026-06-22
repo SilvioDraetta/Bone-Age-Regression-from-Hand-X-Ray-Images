@@ -1,0 +1,11 @@
+#Da cancellare alla fine
+PREPARAZIONE DATASET
+Dopo aver scaricato il data set disponibile sul sito RSNA, si è passati a una prima esplorazione dei 
+dati. Il data set disponibile, per quanto riguarda sia il data set di training che di validation,
+consiste nei seguenti files:
+una prima cartella contenente, in formato png, le foto delle radiografie e la seconda le tabelle csv
+con i dati utili. Ogni tabella csv ha come head l' ID della radiografia, il genere del paziente, 
+riportato come "male" (di conseguenza i valori sono booleani), l'età in mesi.
+Importatnte è notare che le tabelle riportavano  head differenti per gli stessi dati, dunque nella
+analisi si è scelto di modificare il data set di validation in modo tale da uniformarlo a 
+quello di training, per una maggiore comodità.
