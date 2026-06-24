@@ -43,3 +43,7 @@ def CNN():
 
     model.summary()
     return model
+
+#DA IMPLEMENTARE
+def CNN_MI():
+    return 
