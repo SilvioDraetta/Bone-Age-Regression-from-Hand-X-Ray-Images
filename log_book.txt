@@ -9,3 +9,10 @@ riportato come "male" (di conseguenza i valori sono booleani), l'età in mesi.
 Importatnte è notare che le tabelle riportavano  head differenti per gli stessi dati, dunque nella
 analisi si è scelto di modificare il data set di validation in modo tale da uniformarlo a 
 quello di training, per una maggiore comodità.
+Dato che nel data base sono a disposizione due cartelle separate contenti ciascuna una parte
+dei dati di validation, si è scelto di utilizzare la prima cartella (validation 1) come dati 
+per la validation, mentre la seconda (validation 2) per il test.
+
+#DA FARE EMILIA
+scegliere le percentuali di dati per la validation e per il test e successivamentre dividere anche
+la tabella csv. 
