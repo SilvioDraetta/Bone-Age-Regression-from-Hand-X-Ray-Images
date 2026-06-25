@@ -30,6 +30,34 @@ def  create_dataframe(csv_file: str, image_folder: str, segmented:bool=False):
         df["path"]  = image_folder + df["id"].astype(str) + ".png"
     return df
 
+#Function for the merge of datasets
+
+def merge_dataset(df, df_segmented):
+    """
+    Merge two pandas DataFrames by concatenating their rows.
+
+    The function combines the original dataset with a second dataset
+    (e.g. a segmented version of the images) by appending the rows of
+    the second dataframe below the first one.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Original dataframe containing the dataset samples.
+
+    df_segmented : pandas.DataFrame
+        Dataframe containing additional samples to be added.
+        It should have the same column structure as the first one.
+
+    Returns
+    -------
+    pandas.DataFrame
+        A new dataframe containing all samples from both input dataframes,
+        with a reset continuous index.
+    """
+    df_all = pd.concat([df, df_segmented], ignore_index=True)
+    return df_all
+
 
 
 
