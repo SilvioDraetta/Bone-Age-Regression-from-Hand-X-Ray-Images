@@ -75,10 +75,10 @@ def create_dataset_tf(dataset, load_image, num_samples=None, seed=42):
         num_samples = min(num_samples, dataset_length)
         dataset = dataset.shuffle(dataset_length, seed=seed)
         dataset = dataset.take(num_samples)
-        dataset_length = num_samples
+        
 
+    #dataset = dataset.shuffle(buffer_size=1000, seed=seed)
     dataset = dataset.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
-    dataset = dataset.shuffle(buffer_size = dataset_length, seed=seed)
-    dataset = dataset.batch(32)
-    dataset = dataset.prefetch(tf.data.AUTOTUNE)
+    dataset = dataset.batch(32).prefetch(tf.data.AUTOTUNE)
+
     return dataset

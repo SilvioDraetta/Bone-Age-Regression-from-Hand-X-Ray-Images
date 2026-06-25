@@ -1,7 +1,7 @@
 import pandas as pd
 
 #creation of the DataFrame
-def  create_dataframe(csv_file: str, image_folder: str):  
+def  create_dataframe(csv_file: str, image_folder: str, segmented:bool=False):  
     """
     Load a CSV file containing image IDs and create a DataFrame
     with the corresponding image paths.
@@ -24,7 +24,10 @@ def  create_dataframe(csv_file: str, image_folder: str):
     if not image_folder.endswith("/"):
         image_folder += "/"
     df = pd.read_csv(csv_file)
-    df["path"]  = image_folder + df["id"].astype(str) + ".png"
+    if segmented:
+        df["path"]  = image_folder + df["id"].astype(str) + "_seg" + ".png"
+    else: 
+        df["path"]  = image_folder + df["id"].astype(str) + ".png"
     return df
 
 

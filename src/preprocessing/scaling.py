@@ -41,11 +41,6 @@ def scaling_data(df, df_val):
         Fitted scaler object using only the training labels.
         It can be used to inverse-transform model predictions
         from normalized values back to the original bone age scale.
-
-    Notes
-    -----
-    The scaler is fitted only on the training set to avoid data leakage
-    from the validation set.
     """
     paths = df["path"].values
     labels = df[["boneage"]].values.astype("float32")

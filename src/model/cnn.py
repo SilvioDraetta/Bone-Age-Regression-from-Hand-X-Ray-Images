@@ -33,11 +33,11 @@ def CNN():
     tf.keras.layers.MaxPooling2D(2),
     tf.keras.layers.Conv2D(128, 3, padding='same', activation='relu'),
     tf.keras.layers.GlobalAveragePooling2D(),
-    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(1)  # regression output (change as needed)
     ])  
-    model.compile(optimizer=tf.keras.optimizers.Adam(1e-4),
+    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
               loss='mse',
               metrics=['mae'])
 
