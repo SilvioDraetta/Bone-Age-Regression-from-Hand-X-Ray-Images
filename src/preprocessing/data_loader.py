@@ -30,7 +30,8 @@ def load_image(path, label):
         - label : tf.Tensor
             Original image label.
     """
-    
+    #tf.print("LOADING PATH:", path)
+
     img = tf.io.read_file(path)
     img = tf.image.decode_png(img, channels=1)   # grayscale
     img = tf.image.resize(img, (224, 224))
@@ -77,8 +78,53 @@ def create_dataset_tf(dataset, load_image, num_samples=None, seed=42):
         dataset = dataset.take(num_samples)
         
 
-    #dataset = dataset.shuffle(buffer_size=1000, seed=seed)
+    dataset = dataset.shuffle(buffer_size=1000, seed=seed)
     dataset = dataset.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
     dataset = dataset.batch(32).prefetch(tf.data.AUTOTUNE)
 
     return dataset
+
+
+def load_image_segmented(path, label):
+    """
+    Load and preprocess a segmented RGBA image for model inference.
+
+    The function reads an RGBA PNG image from the given path, decodes it
+    with four channels (R, G, B, A), and resizes it to 224×224 pixels.
+    The alpha channel contains the segmentation mask, which is applied to
+    the RGB channels to isolate the segmented region. The masked RGB image
+    is then converted to grayscale and normalized to the range [0, 1].
+
+    Parameters
+    ----------
+    path : tf.Tensor
+        Path to the RGBA image file.
+
+    label : tf.Tensor
+        Corresponding label associated with the image (e.g., bone age).
+
+    Returns
+    -------
+    tuple[tf.Tensor, tf.Tensor]
+        A tuple containing:
+
+        - img_segmented : tf.Tensor
+            Grayscale segmented image with shape (224, 224, 1), normalized
+            to the range [0, 1].
+
+        - label : tf.Tensor
+            Original image label.
+    """
+
+    img = tf.io.read_file(path)
+    img = tf.image.decode_png(img, channels=4)
+    img = tf.image.resize(img, (224, 224))
+    img = img / 255.0
+
+    rgb = img[:, :, :3]
+    alpha = img[:, :, 3:]
+
+    img_segmented = rgb * alpha
+    img_segmented = tf.image.rgb_to_grayscale(img_segmented)
+
+    return img_segmented, label
