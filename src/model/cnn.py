@@ -35,7 +35,7 @@ def CNN():
     tf.keras.layers.GlobalAveragePooling2D(),
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dropout(0.3),
-    tf.keras.layers.Dense(1)  # regression output (change as needed)
+    tf.keras.layers.Dense(1)  
     ])  
     model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
               loss='mse',
@@ -43,7 +43,3 @@ def CNN():
 
     model.summary()
     return model
-
-#DA IMPLEMENTARE
-def CNN_MI():
-    return 
