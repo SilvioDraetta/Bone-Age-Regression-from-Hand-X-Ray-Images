@@ -30,10 +30,9 @@ def load_image(path, label):
         - label : tf.Tensor
             Original image label.
     """
-    #tf.print("LOADING PATH:", path)
 
     img = tf.io.read_file(path)
-    img = tf.image.decode_png(img, channels=1)   # grayscale
+    img = tf.image.decode_png(img, channels=1)   
     img = tf.image.resize(img, (224, 224))
     img = img / 255.0
     return img, label
