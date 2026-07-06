@@ -1,6 +1,7 @@
 import tensorflow as tf
-import numpy
-
+import cv2
+import numpy as np
+import SimpleITK as sitk
 
 def load_image(path, label):
     """
@@ -127,3 +128,32 @@ def load_image_segmented(path, label):
     img_segmented = tf.image.rgb_to_grayscale(img_segmented)
 
     return img_segmented, label
+
+def load_segmented_for_radiomics(path):
+    """
+    Load a segmented radiography and prepare it for PyRadiomics.
+
+    The image is read in grayscale, resized to 224x224 pixels, and
+    converted to a SimpleITK image. A binary mask is generated from the
+    non-zero pixels and resized accordingly.
+
+    Parameters
+    ----------
+    path : str
+        Path to the segmented radiography.
+
+    Returns
+    -------
+    tuple[SimpleITK.Image, SimpleITK.Image]
+        The resized grayscale image and its corresponding binary mask.
+    """
+    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+    mask = (img > 0).astype(np.uint8)
+
+    img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)
+    mask = cv2.resize(mask, (224, 224), interpolation=cv2.INTER_NEAREST)
+
+    image_sitk = sitk.GetImageFromArray(img.astype(np.float32))
+    mask_sitk = sitk.GetImageFromArray(mask.astype(np.uint8))
+
+    return image_sitk, mask_sitk
