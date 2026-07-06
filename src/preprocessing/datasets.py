@@ -190,3 +190,41 @@ def load_segmented_for_radiomics(path):
     mask_sitk = sitk.GetImageFromArray(mask.astype(np.uint8))
 
     return image_sitk, mask_sitk
+
+
+from tqdm.notebook import tqdm
+import pandas as pd
+from src.preprocessing.datasets import load_segmented_for_radiomics
+
+def extract_radiomics_features(df, extractor, n_features=50):
+    """
+    Extract the first n original PyRadiomics features for each image.
+    """
+
+    all_features = []
+
+    for _, row in tqdm(
+        df.iterrows(),
+        total=len(df),
+        desc="Extracting radiomics features"
+    ):
+
+        image, mask = load_segmented_for_radiomics(row["path"])
+
+        result = extractor.execute(image, mask, label=1)
+
+        features = {
+            k: float(v)
+            for k, v in result.items()
+            if k.startswith("original_")
+        }
+
+        selected_features = dict(list(features.items())[:n_features])
+
+        selected_features["id"] = row["id"]
+        selected_features["boneage"] = row["boneage"]
+        selected_features["male"] = row["male"]
+
+        all_features.append(selected_features)
+
+    return pd.DataFrame(all_features)
