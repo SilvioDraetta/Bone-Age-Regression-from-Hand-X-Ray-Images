@@ -1,6 +1,4 @@
 import tensorflow as tf
-import numpy
-
 
 def load_image(path, label):
     """
@@ -127,3 +125,36 @@ def load_image_segmented(path, label):
     img_segmented = tf.image.rgb_to_grayscale(img_segmented)
 
     return img_segmented, label
+
+
+from torch.utils.data import Dataset
+from PIL import Image
+import torch
+
+class BoneAgeDataset(Dataset):
+
+    def __init__(self, df_seg, transform=None):
+
+        self.df_seg = df_seg.reset_index(drop=True).copy()
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.df_seg)
+
+    def __getitem__(self, idx):
+
+        row = self.df_seg.iloc[idx]
+
+        image = Image.open(row["path"])
+
+        if self.transform:
+            image = self.transform(image)
+
+        sample = {
+            "image": image,
+            "male": torch.tensor(float(row["male"]), dtype=torch.float32),
+            "boneage": torch.tensor(float(row["boneage"]), dtype=torch.float32),
+            "id": int(row["id"])
+        }
+
+        return sample

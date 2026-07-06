@@ -1,7 +1,6 @@
 import pandas as pd
 
-#creation of the DataFrame
-def  create_dataframe(csv_file: str, image_folder: str, segmented:bool=False):  
+def create_dataframe(csv_file: str, image_folder: str, segmented:bool=False):  
     """
     Load a CSV file containing image IDs and create a DataFrame
     with the corresponding image paths.

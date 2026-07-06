@@ -1,25 +1,18 @@
-#DEFINIRE FUNZIONE DI VISUALIZZAZIONE LOSS
+import pandas as pd
 import matplotlib.pyplot as plt
-def plot_loss(history):
-    """
-    Plot training and validation loss as a function of training epochs.
 
-    Parameters
-    ----------
-    history : keras.callbacks.History
-        History object returned by model.fit(). It must contain the
-        keys "loss" and "val_loss" in the history.history
-        dictionary.
+def plot_loss(path="name_excel.xlsx"):
+    df = pd.read_excel(path)
 
-    """
-    plt.figure(figsize=(8, 5))
-    plt.plot(history.history["loss"], label="Training Loss")
-    plt.plot(history.history["val_loss"], label="Validation Loss")
+    # Plot
+    plt.figure(figsize=(12, 6))
+    plt.plot(df["epoch"], df["train_loss"], label="Train Loss", linewidth=2)
+    plt.plot(df["epoch"], df["val_loss"], label="Validation Loss", linewidth=2)
 
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("Training and Validation Loss")
+    plt.title("Train vs Validation Loss")
     plt.legend()
     plt.grid(True)
-
+    plt.tight_layout()
     plt.show()
