@@ -1,3 +1,9 @@
+"""Functions for preprocessing segmented images for PyRadiomics."""
+
+# pylint: disable=no-member
+
+from tqdm import tqdm
+import pandas as pd
 import cv2
 import numpy as np
 import SimpleITK as sitk
@@ -22,6 +28,10 @@ def load_segmented_for_radiomics(path):
         The resized grayscale image and its corresponding binary mask.
     """
     img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+
+    if img is None:
+        raise FileNotFoundError(f"Unable to read image: {path}")
+
     mask = (img > 0).astype(np.uint8)
 
     img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)
@@ -31,10 +41,6 @@ def load_segmented_for_radiomics(path):
     mask_sitk = sitk.GetImageFromArray(mask.astype(np.uint8))
 
     return image_sitk, mask_sitk
-
-
-from tqdm import tqdm
-import pandas as pd
 
 def extract_radiomics_features(df, extractor, n_features=50):
     """
