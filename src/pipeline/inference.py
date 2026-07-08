@@ -8,22 +8,15 @@ sys.path.insert(0, str(PROJECT_ROOT))
 import torch
 from .load_birefnet import load_birefnet
 from src.preprocessing.segmentation import extract_object
-
-def run_segmentation(image_path: str):
-    model = load_birefnet()
-    image, _ = extract_object(model, image_path)
-    return image
-
 import json
+from .loader import load_bone_age_model
+from src.preprocessing.transforms import transform
 
 with open("src/config/stats.json") as f:
     stats = json.load(f)
 
 MEAN = stats["mean"]
 STD = stats["std"]
-
-from .loader import load_bone_age_model
-from src.preprocessing.transforms import transform
 
 def run_bone_age_inference(image_path, sex_bool, device="cuda"):
     
@@ -46,6 +39,4 @@ def run_bone_age_inference(image_path, sex_bool, device="cuda"):
     prediction_years = prediction / 12  # Convert months to years
 
     return prediction, prediction_years
-
-
 
