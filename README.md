@@ -32,9 +32,10 @@ Both the training and validation datasets are organized into two main components
 a folder containing the hand X-ray images in .png format;
 a .csv file containing the corresponding metadata.
 Each CSV file includes the radiograph ID, the patient's sex, and the bone age expressed in months. The patient's sex is reported through the male column, which contains boolean values.
-
 An important preprocessing step was required because the training and validation CSV files used different column names for the same information. For this reason, the validation metadata table was renamed and reorganized to match the structure of the training table. This made the following preprocessing, training, and evaluation steps more consistent and easier to manage.
+
 The original dataset provides two separate validation folders. In this project, the first validation subset, referred to as validation 1, was used as the validation set, while the second validation subset, referred to as validation 2, was used as the final test set.
+
 ---
 
 ## Features
