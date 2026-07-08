@@ -25,6 +25,16 @@ https://pubs.rsna.org/doi/10.1148/radiol.2018180736
 
 https://www.rsna.org/artificial-intelligence/ai-image-challenge/rsna-pediatric-bone-age-challenge-2017
 
+After downloading the dataset from the RSNA website, an initial data exploration step was performed.
+
+Both the training and validation datasets are organized into two main components:
+
+a folder containing the hand X-ray images in .png format;
+a .csv file containing the corresponding metadata.
+Each CSV file includes the radiograph ID, the patient's sex, and the bone age expressed in months. The patient's sex is reported through the male column, which contains boolean values.
+
+An important preprocessing step was required because the training and validation CSV files used different column names for the same information. For this reason, the validation metadata table was renamed and reorganized to match the structure of the training table. This made the following preprocessing, training, and evaluation steps more consistent and easier to manage.
+The original dataset provides two separate validation folders. In this project, the first validation subset, referred to as validation 1, was used as the validation set, while the second validation subset, referred to as validation 2, was used as the final test set.
 ---
 
 ## Features
@@ -101,7 +111,7 @@ For additional examples, see the `demo/` folder.
 The default inference pipeline consists of:
 
 1. Hand segmentation using **BiRefNet**
-2. RGBA → Grayscale conversion
+2. RGBA to Grayscale conversion
 3. Bone age prediction using the best-performing FiLM CNN model
 
 ---
@@ -110,13 +120,14 @@ The default inference pipeline consists of:
 
 Several approaches were investigated during the project.
 
-| Model | Description | Test MAE |
+| Model | Description | Test MAE (months)|
 |:------|:------------|---------:|
-| CNN (TensorFlow) | Trained on original radiographs | **13.61** |
+| CNN (TensorFlow) | Trained on original images | **13.61** |
 | CNN (TensorFlow) | Tested on segmented images | **22.68** |
 | CNN (PyTorch) | Trained on segmented images | **13.07** |
 | CNN (PyTorch) | Tested on original images | **16.18** |
 | CNN + FiLM | Segmented images + patient sex | **9.45** |
+| CNN + FiLM | Original images + patient sex | **18.52** |
 | Random Forest + Radiomics | PyRadiomics features extracted from segmented images | **23.51** |
 
 The first TensorFlow model performed poorly on segmented images, suggesting that it relied on contextual information outside the hand, especially for younger patients.
@@ -140,13 +151,12 @@ BoneAge/
 │
 ├── notebook/
 │   ├── model_results/
-│   │   ├── 00_cnn.ipynb
-│   │   ├── 01_cnn_results.ipynb
-│   │   ├── 02_cnn_torch.ipynb
-│   │   ├── 03_cnn_torch_results.ipynb
-│   │   ├── 04_cnn_torch_male_results.ipynb
-│   │   └── 05_ML.ipynb
-│   └── demo.ipynb             # Example notebook
+│       ├── 00_cnn.ipynb
+│       ├── 01_cnn_results.ipynb
+│       ├── 02_cnn_torch.ipynb
+│       ├── 03_cnn_torch_results.ipynb
+│       ├── 04_cnn_torch_male_results.ipynb
+│       └── 05_ML.ipynb
 │
 ├── scripts/                   # Utility scripts (training, evaluation, etc.)
 │
@@ -164,8 +174,8 @@ BoneAge/
 ├── tests/                     # Unit tests
 │
 ├── .gitignore
+├── demo.ipynb                 # Demo for main usage
 ├── LICENSE
-├── log_book.txt               # Development notes
 ├── main.py                    # Entry point for running the project
 ├── pyproject.toml             # Project configuration and dependencies
 └── README.md                  # Main documentation
@@ -175,23 +185,45 @@ BoneAge/
 
 ## API Overview
 
-The source code is organized into reusable modules.
+The source code is organized into reusable modules inside the `src/` package.
 
-### `src/dataset`
+### `src.model`
 
-Contains dataset classes and preprocessing utilities used during training and inference.
+Contains the neural network architectures developed during the project, including the FiLM-based CNN model.
 
-### `src/models`
+### `src.pipeline`
 
-Implements the neural network architectures developed during the project, including the FiLM-based CNN model.
+Contains the modules used by the main inference pipeline, including model loading and prediction utilities.
 
-### `src/training`
+### `src.preprocessing`
 
-Contains the training loop, loss functions, metrics, callbacks, and evaluation utilities.
+Contains the preprocessing functions used to prepare the data before training and inference.
 
-### `src/utils`
+The preprocessing modules are:
 
-General-purpose helper functions for image processing, visualization, file management, and miscellaneous utilities.
+* `datasets_radiomics`: utilities for loading segmented images and extracting radiomics features;
+* `datasets`: dataset classes and image loading utilities;
+* `rgba_conversion`: functions for converting segmented RGBA images into grayscale images;
+* `scaling`: utilities for scaling target values and preparing datasets;
+* `segmentation`: functions for hand segmentation using BiRefNet;
+* `transforms`: image transformations used during model training and evaluation.
+
+### `src.utils`
+
+The `dataframe_utils` module provides functions for creating and organizing the project dataframes.
+
+### `src.visualization`
+
+Contains plotting utilities, including functions for visualizing training and validation loss curves.
+
+### `src.engine`
+
+Contains the PyTorch training pipeline, including:
+
+* early stopping;
+* training for one epoch;
+* validation;
+* complete model training loop.
 
 ---
 
