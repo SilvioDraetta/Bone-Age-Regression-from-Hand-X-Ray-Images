@@ -45,8 +45,7 @@ The original dataset provides two separate validation folders. In this project, 
 - CNN-based deep learning models implemented in TensorFlow and PyTorch
 - FiLM conditioning using patient sex
 - Radiomics feature extraction with **PyRadiomics**
-- Random Forest regression baseline
-- Complete training notebooks
+- Complete training and results notebooks
 - Ready-to-use inference pipeline
 
 ---
@@ -103,7 +102,7 @@ python main.py \
     --sex female
 ```
 
-For additional examples, see the `demo/` folder.
+For additional examples, see the `demo/` notebook.
 
 ---
 
@@ -135,7 +134,7 @@ The first TensorFlow model performed poorly on segmented images, suggesting that
 
 Training exclusively on segmented images significantly improved the robustness of the CNN-based models.
 
-The best-performing architecture combines image features with the patient's sex through a **Feature-wise Linear Modulation (FiLM)** layer, achieving a **Mean Absolute Error (MAE) of 9.45 months** on the segmented test set.
+The best-performing architecture combines image features with the patient's sex through a **Feature-wise Linear Modulation (FiLM)** layer, achieving a **Mean Absolute Error (MAE) of 9.45 months** on the segmented test set (image below).
 
 As an alternative approach, handcrafted radiomics features were extracted from segmented hand radiographs using **PyRadiomics** and used to train a **Random Forest Regressor**. The model achieved a **MAE of 23.51 months**. Feature importance analysis indicated that texture descriptors—particularly **Gray Level Non-Uniformity** and **Long Run Emphasis**—together with the patient's sex were among the most informative predictors.
 
@@ -151,7 +150,7 @@ BoneAge/
 ├── data/                      # Dataset and raw images (optional)
 │
 ├── notebook/
-│   ├── model_results/
+│   └── model_results/
 │       ├── 00_cnn.ipynb
 │       ├── 01_cnn_results.ipynb
 │       ├── 02_cnn_torch.ipynb
@@ -241,27 +240,19 @@ The `scripts/` directory contains standalone utilities used during dataset prepa
 
 ## Notebooks
 
-The notebooks document the different stages of the project.
+The notebooks document the main experimental stages of the project, from baseline training to model evaluation and radiomics analysis.
 
-| Notebook | Description |
-|:---------|:------------|
-| `01_...` | Baseline TensorFlow CNN trained on original images |
-| `02_...` | Data exploration and preprocessing |
-| `03_...` | PyTorch CNN trained on segmented images |
-| `04_...` | CNN with FiLM conditioning using patient sex |
-| `05_...` | Radiomics feature extraction and Random Forest regression |
+| Notebook | Description                                                                                   |
+| :------- | :-------------------------------------------------------------------------------------------- |
+| `00_...` | Baseline TensorFlow CNN trained on original radiographs.                                      |
+| `01_...` | Evaluation and results of the TensorFlow CNN baseline.                                        |
+| `02_...` | PyTorch CNN training on segmented images, with and without FiLM conditioning.                 |
+| `03_...` | Evaluation of the PyTorch CNN trained without patient sex information.                        |
+| `04_...` | Evaluation of the PyTorch CNN trained with patient sex information through FiLM conditioning. |
+| `05_...` | Radiomics feature extraction and Random Forest regression baseline.                           |
 
----
+In notebook `02_...`, both PyTorch CNN models are trained using the same training pipeline. The `train_model` function includes the `use_male` parameter: when `use_male=False`, the model is trained using only image information; when `use_male=True`, patient sex is included through the FiLM conditioning mechanism.
 
-## Future Improvements
-
-Possible future developments include:
-
-- Vision Transformer (ViT) architectures
-- Ensemble learning approaches
-- Hyperparameter optimization
-- Explainability methods (Grad-CAM, SHAP)
-- Model deployment through a web interface
 
 ---
 
