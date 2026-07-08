@@ -1,3 +1,5 @@
+"""Functions for scaling the TensorFlow DataSet."""
+
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 
@@ -60,7 +62,7 @@ def scaling_data(df, df_val):
 
 def scaling_data_torch(df, df_val, df_test):
     """
-    Scale the target variable (bone age) using StandardScaler for training, 
+    Scale the target variable (bone age) using StandardScaler for training,
     validation and test datasets.
 
     The function extracts the bone age labels from the provided training,

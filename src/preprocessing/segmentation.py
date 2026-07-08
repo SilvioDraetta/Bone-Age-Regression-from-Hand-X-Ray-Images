@@ -5,7 +5,32 @@ import torch
 from torchvision import transforms
 
 def extract_object(birefnet, imagepath):
-    # Data settings
+    """
+    Extract the foreground object from an image using a BiRefNet model.
+
+    The function applies the required preprocessing, performs inference to
+    predict a segmentation mask, and returns the original image with the
+    predicted alpha channel together with the binary mask.
+
+    Parameters
+    ----------
+    birefnet : torch.nn.Module
+        Pretrained BiRefNet segmentation model.
+
+    imagepath : str or pathlib.Path
+        Path to the input RGB image.
+
+    Returns
+    -------
+    tuple[PIL.Image.Image, PIL.Image.Image]
+        A tuple containing:
+
+        - image : PIL.Image.Image
+            Original image with the predicted alpha mask applied.
+
+        - mask : PIL.Image.Image
+            Predicted segmentation mask resized to the original image size.
+    """
     image_size = (1024, 1024)
     transform_image = transforms.Compose([
         transforms.Resize(image_size),
@@ -17,7 +42,6 @@ def extract_object(birefnet, imagepath):
 
     input_images = transform_image(image).unsqueeze(0).to('cuda').half()
 
-    # Prediction
     with torch.no_grad():
         preds = birefnet(input_images)[-1].sigmoid().cpu()
     pred = preds[0].squeeze()
@@ -65,4 +89,4 @@ def segmentation_folder(birefnet, input_dir, output_dir):
         result = extract_object(birefnet, in_path)[0]
         result.save(out_path)
 
-    print("✔️ Completed! All images processed.")
+    print("All images processed.")

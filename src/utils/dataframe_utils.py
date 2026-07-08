@@ -1,3 +1,4 @@
+"""Utilities for creating Pandas DataFrames from image data"""
 import pandas as pd
 
 def create_dataframe(csv_file: str, image_folder: str, segmented:bool=False):  
