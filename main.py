@@ -1,5 +1,4 @@
 import argparse
-from src.pipeline.inference import run_segmentation
 from src.pipeline.inference import run_bone_age_inference
 
 import warnings

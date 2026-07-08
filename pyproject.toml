@@ -1,0 +1,23 @@
+[project]
+name = "BoneAgeRegressor"
+version = "0.1.0"
+description = "A pipeline for bone age prediction from hand radiographs"
+authors = [
+    { name = "Silvio Draetta" }
+    { name = "Emilia Boschi" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "torch",
+    "torchvision",
+    "transformers",
+    "pillow",
+    "numpy",
+    "tqdm"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

@@ -1,7 +1,6 @@
 """Functions for preprocessing images for the Neural Network."""
 
 import tensorflow as tf
-import numpy as np
 from torch.utils.data import Dataset
 from PIL import Image
 import torch
@@ -130,37 +129,35 @@ def load_image_segmented(path, label):
     return img_segmented, label
 
 class BoneAgeDataset(Dataset):
-    class BoneAgeDataset(Dataset):
-        """
-        PyTorch dataset for bone age regression.
+    """
+    PyTorch dataset for bone age regression.
 
-        The dataset loads segmented hand radiographs from a pandas DataFrame,
-        applies optional image transformations, and returns each sample as a
-        dictionary containing the image, the patient's sex, the target bone
-        age, and the image identifier.
+    The dataset loads segmented hand radiographs from a pandas DataFrame,
+    applies optional image transformations, and returns each sample as a
+    dictionary containing the image, the patient's sex, the target bone
+    age, and the image identifier.
 
-        Parameters
-        ----------
-        df_seg : pandas.DataFrame
-            DataFrame containing the dataset information. It must include the
-            columns ``path``, ``male``, ``boneage``, and ``id``.
-        transform : callable, optional
-            Transformations to apply to the input image (e.g. resizing,
-            normalization, data augmentation). The default is None.
+    Parameters
+    ----------
+    df_seg : pandas.DataFrame
+        DataFrame containing the dataset information. It must include the
+        columns ``path``, ``male``, ``boneage``, and ``id``.
+    transform : callable, optional
+        Transformations to apply to the input image (e.g. resizing,
+        normalization, data augmentation). The default is None.
 
-        Returns
-        -------
-        dict
-            A dictionary with the following keys:
+    Returns
+    -------
+    dict
+        A dictionary with the following keys:
 
-            - ``image`` : transformed image.
-            - ``male`` : patient's sex as a float tensor.
-            - ``boneage`` : target bone age as a float tensor.
-            - ``id`` : image identifier.
-        """
+        - ``image`` : transformed image.
+        - ``male`` : patient's sex as a float tensor.
+        - ``boneage`` : target bone age as a float tensor.
+        - ``id`` : image identifier.
+    """
 
     def __init__(self, df_seg, transform=None):
-
         self.df_seg = df_seg.reset_index(drop=True).copy()
         self.transform = transform
 
@@ -168,7 +165,6 @@ class BoneAgeDataset(Dataset):
         return len(self.df_seg)
 
     def __getitem__(self, idx):
-
         row = self.df_seg.iloc[idx]
 
         image = Image.open(row["path"])
@@ -184,4 +180,5 @@ class BoneAgeDataset(Dataset):
         }
 
         return sample
+
     
