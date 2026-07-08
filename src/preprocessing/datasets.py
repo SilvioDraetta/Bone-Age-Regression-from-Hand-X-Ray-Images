@@ -1,7 +1,10 @@
+"""Functions for preprocessing images for the Neural Network."""
+
 import tensorflow as tf
-import cv2
 import numpy as np
-import SimpleITK as sitk
+from torch.utils.data import Dataset
+from PIL import Image
+import torch
 
 def load_image(path, label):
     """
@@ -38,7 +41,6 @@ def load_image(path, label):
     img = img / 255.0
     return img, label
 
-#DA IMPLEMENTARE SPLIT DEL DATASET
 def create_dataset_tf(dataset, load_image, num_samples=None, seed=42):
     """
     Create an optimized TensorFlow Dataset pipeline for model training.
@@ -77,13 +79,11 @@ def create_dataset_tf(dataset, load_image, num_samples=None, seed=42):
         dataset = dataset.shuffle(dataset_length, seed=seed)
         dataset = dataset.take(num_samples)
         
-
     dataset = dataset.shuffle(buffer_size=1000, seed=seed)
     dataset = dataset.map(load_image, num_parallel_calls=tf.data.AUTOTUNE)
     dataset = dataset.batch(32).prefetch(tf.data.AUTOTUNE)
 
     return dataset
-
 
 def load_image_segmented(path, label):
     """
@@ -129,12 +129,35 @@ def load_image_segmented(path, label):
 
     return img_segmented, label
 
-
-from torch.utils.data import Dataset
-from PIL import Image
-import torch
-
 class BoneAgeDataset(Dataset):
+    class BoneAgeDataset(Dataset):
+        """
+        PyTorch dataset for bone age regression.
+
+        The dataset loads segmented hand radiographs from a pandas DataFrame,
+        applies optional image transformations, and returns each sample as a
+        dictionary containing the image, the patient's sex, the target bone
+        age, and the image identifier.
+
+        Parameters
+        ----------
+        df_seg : pandas.DataFrame
+            DataFrame containing the dataset information. It must include the
+            columns ``path``, ``male``, ``boneage``, and ``id``.
+        transform : callable, optional
+            Transformations to apply to the input image (e.g. resizing,
+            normalization, data augmentation). The default is None.
+
+        Returns
+        -------
+        dict
+            A dictionary with the following keys:
+
+            - ``image`` : transformed image.
+            - ``male`` : patient's sex as a float tensor.
+            - ``boneage`` : target bone age as a float tensor.
+            - ``id`` : image identifier.
+        """
 
     def __init__(self, df_seg, transform=None):
 
@@ -162,31 +185,3 @@ class BoneAgeDataset(Dataset):
 
         return sample
     
-def load_segmented_for_radiomics(path):
-    """
-    Load a segmented radiography and prepare it for PyRadiomics.
-
-    The image is read in grayscale, resized to 224x224 pixels, and
-    converted to a SimpleITK image. A binary mask is generated from the
-    non-zero pixels and resized accordingly.
-
-    Parameters
-    ----------
-    path : str
-        Path to the segmented radiography.
-
-    Returns
-    -------
-    tuple[SimpleITK.Image, SimpleITK.Image]
-        The resized grayscale image and its corresponding binary mask.
-    """
-    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-    mask = (img > 0).astype(np.uint8)
-
-    img = cv2.resize(img, (224, 224), interpolation=cv2.INTER_AREA)
-    mask = cv2.resize(mask, (224, 224), interpolation=cv2.INTER_NEAREST)
-
-    image_sitk = sitk.GetImageFromArray(img.astype(np.float32))
-    mask_sitk = sitk.GetImageFromArray(mask.astype(np.uint8))
-
-    return image_sitk, mask_sitk
