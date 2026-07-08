@@ -6,10 +6,6 @@ import copy
 from tqdm import tqdm
 
 
-# =========================
-# EARLY STOPPING
-# =========================
-
 class EarlyStopping:
 
     def __init__(self, patience=10, min_delta=0.0):
@@ -40,22 +36,14 @@ class EarlyStopping:
         return self.counter >= self.patience
 
 
-# =========================
-# METRICS
-# =========================
-
 def mae_months(pred, target, scaler):
 
-    # inverse transform (standardized → months)
+    # inverse transform 
     pred = pred * scaler.scale_[0] + scaler.mean_[0]
     target = target * scaler.scale_[0] + scaler.mean_[0]
 
     return torch.mean(torch.abs(pred - target)).item()
 
-
-# =========================
-# TRAIN ONE EPOCH
-# =========================
 
 def train_one_epoch(model, loader, optimizer, criterion, device, use_male=False):
 
@@ -86,10 +74,6 @@ def train_one_epoch(model, loader, optimizer, criterion, device, use_male=False)
     return total_loss / len(loader)
 
 
-# =========================
-# VALIDATION
-# =========================
-
 def validate(model, loader, criterion, device, scaler, use_male = False):
 
     model.eval()
@@ -118,10 +102,6 @@ def validate(model, loader, criterion, device, scaler, use_male = False):
 
     return total_loss / len(loader), total_mae / len(loader)
 
-
-# =========================
-# MAIN TRAIN LOOP
-# =========================
 
 def train_model(
     model,
@@ -163,27 +143,20 @@ def train_model(
             f"Val MAE (months): {val_mae:.2f}"
         )
 
-        # =========================
-        # SAVE BEST MODEL
-        # =========================
-
         if val_loss < best_val_loss:
 
             best_val_loss = val_loss
 
             torch.save(model.state_dict(), save_path)
 
-            print(f"✔ Saved best model (loss {val_loss:.4f})")
+            print(f"+++ Saved best model (loss {val_loss:.4f})")
 
-        # =========================
-        # EARLY STOPPING
-        # =========================
 
         early_stopper.step(val_loss, model)
 
         if early_stopper.should_stop():
 
-            print("⛔ Early stopping triggered")
+            print("Early stopping triggered")
 
             break
 
