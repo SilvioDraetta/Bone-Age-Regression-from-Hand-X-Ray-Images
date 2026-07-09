@@ -3,11 +3,9 @@
 import sys
 from pathlib import Path
 import json
-
 import torch
 from torchvision import transforms
 from PIL import Image
-
 from .load_birefnet import load_birefnet
 from .loader import load_bone_age_model
 
@@ -128,7 +126,7 @@ def run_bone_age_inference(image_path, sex_bool, device="cuda"):
     model = load_bone_age_model(
         "notebook/model_results/torch_model_male.pt",
         device
-    )
+    ).eval()
 
     with torch.no_grad():
         pred = model(img_tensor, male_tensor).cpu().item()
@@ -136,7 +134,7 @@ def run_bone_age_inference(image_path, sex_bool, device="cuda"):
     prediction = STD * pred + MEAN
     prediction = round(prediction, 2)
 
-    prediction_years = prediction / 12
+    prediction_years = round(prediction / 12, 2)
 
     return prediction, prediction_years
 
