@@ -147,7 +147,7 @@ As an alternative approach, handcrafted radiomics features were extracted from s
 ```text
 BoneAge/
 │
-├── data/                      # Dataset and raw images (optional)
+├── data/                           # Dataset and raw images 
 │
 ├── notebook/
 │   └── model_results/
@@ -158,27 +158,28 @@ BoneAge/
 │       ├── 04_cnn_torch_male_results.ipynb
 │       └── 05_ML.ipynb
 │
-├── scripts/                   # Utility scripts (training, evaluation, etc.)
+├── scripts/                         # Utility scripts (training, evaluation, etc.)
 │
 ├── src/
-│   ├── pycache/           # Python cache
-│   ├── config/                # Configuration files
-│   ├── model/                 # ML/DL models
-│   ├── pipeline/              # Pipeline orchestration modules
-│   ├── preprocessing/         # Image preprocessing functions
-│   ├── utils/                 # Helper utilities
-│   ├── visualization/         # Plotting and visualization tools
+│   ├── config/                      # Configuration files
+│   ├── model/                       # ML/DL models
+│   ├── pipeline/                    # Pipeline orchestration modules
+│   ├── preprocessing/               # Image preprocessing functions
+│   ├── utils/                       # Helper utilities
+│   ├── visualization/               # Plotting and visualization tools
 │   ├── init.py
-│   └── engine.py              # Main engine for running the pipeline
+│   └── engine.py                    # Main engine for running the pipeline
 │
-├── tests/                     # Unit tests
+├── tests/                           # Unit tests
 │
 ├── .gitignore
-├── demo.ipynb                 # Demo for main usage
+├── demo.ipynb                       # Demo for main usage
 ├── LICENSE
-├── main.py                    # Entry point for running the project
-├── pyproject.toml             # Project configuration and dependencies
-└── README.md                  # Main documentation
+├── main.py                          # Entry point for running the project
+├── pyproject.toml                   # Project configuration and dependencies
+├── README.md                        # Main documentation
+├── requirements-radiomics.txt       # Python 3.8.10 for PyRadiomics
+└── requirements.txt                 # Main environment
 ```
 
 ---
@@ -253,6 +254,24 @@ The notebooks document the main experimental stages of the project, from baselin
 
 In notebook `02_...`, both PyTorch CNN models are trained using the same training pipeline. The `train_model` function includes the `use_male` parameter: when `use_male=False`, the model is trained using only image information; when `use_male=True`, patient sex is included through the FiLM conditioning mechanism.
 
+---
+## Environment setup
+
+This project uses two separate Python environments due to dependency compatibility requirements.
+
+### CNN environment
+
+Used for the TensorFlow and PyTorch pipelines and requires:
+
+```text
+Python >= 3.10 
+
+### Radiomics environment
+
+Used for the PyRadiomics pipeline and requires:
+
+```text
+Python 3.8.10
 
 ---
 
