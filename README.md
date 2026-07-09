@@ -83,6 +83,11 @@ git clone https://github.com/SilvioDraetta/Bone-Age-Regression-from-Hand-X-Ray-I
 
 cd Bone-Age-Regression-from-Hand-X-Ray-Images
 ```
+Install the requirements:
+
+```bash
+python -r pip install requirements.txt
+```
 
 Install the package:
 
