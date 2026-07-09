@@ -1,3 +1,5 @@
+"""Training utilities for bone age regression models, including validation and early stopping."""
+
 import torch
 import torch.nn as nn
 from torch.optim import Adam

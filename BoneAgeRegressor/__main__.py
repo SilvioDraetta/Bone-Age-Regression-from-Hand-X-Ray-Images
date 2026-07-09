@@ -1,3 +1,5 @@
+"""Command-line interface for running bone age prediction from an input image."""
+
 import argparse
 from BoneAgeRegressor.pipeline.inference import run_bone_age_inference
 

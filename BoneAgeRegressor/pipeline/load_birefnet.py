@@ -1,3 +1,5 @@
+"""Utilities for loading the pretrained BiRefNet segmentation model."""
+
 import sys
 from pathlib import Path
 
@@ -14,7 +16,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def load_birefnet(device="cuda"):
-    # Silence stdout/stderr during model loading
+    """
+    Load and prepare the pretrained BiRefNet model for inference.
+    """
     with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
         birefnet = AutoModelForImageSegmentation.from_pretrained(
             "ZhengPeng7/BiRefNet",

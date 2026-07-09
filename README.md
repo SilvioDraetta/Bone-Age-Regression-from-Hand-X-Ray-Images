@@ -2,13 +2,13 @@
 
 This repository contains the project developed for the **Computing Methods for Experimental Physics** course at the **University of Pisa**.
 
-The goal of the project is to estimate the **bone age of pediatric patients** from hand radiographs using deep learning techniques. We reproduced and extended the methodology proposed in the **RSNA Pediatric Bone Age Challenge**, exploring different neural network architectures and preprocessing pipelines.
+The goal of the project is to estimate the **bone age of pediatric patients** from hand radiographs using deep learning techniques. We attempted the challenge proposed in the **RSNA Pediatric Bone Age Challenge**, exploring different neural network architectures and preprocessing pipelines. 
 
 This README provides installation instructions, usage examples, an overview of the implemented pipelines, and a summary of the obtained results.
 
 ---
 
-## Dataset
+## Dataset 🗂️
 
 The models were trained using the dataset released for the **RSNA Pediatric Bone Age Challenge**.
 
@@ -29,8 +29,9 @@ After downloading the dataset from the RSNA website, an initial data exploration
 
 Both the training and validation datasets are organized into two main components:
 
-a folder containing the hand X-ray images in .png format;
-a .csv file containing the corresponding metadata.
+- A folder containing the hand X-ray images in .png format;
+- A .csv file containing the corresponding metadata.
+
 Each CSV file includes the radiograph ID, the patient's sex, and the bone age expressed in months. The patient's sex is reported through the male column, which contains boolean values.
 An important preprocessing step was required because the training and validation CSV files used different column names for the same information. For this reason, the validation metadata table was renamed and reorganized to match the structure of the training table. This made the following preprocessing, training, and evaluation steps more consistent and easier to manage.
 
@@ -38,7 +39,7 @@ The original dataset provides two separate validation folders. In this project, 
 
 ---
 
-## Features
+## Features 💡
 
 - Bone age estimation from pediatric hand X-ray images
 - Automatic hand segmentation using **BiRefNet**
@@ -50,7 +51,7 @@ The original dataset provides two separate validation folders. In this project, 
 
 ---
 
-## Hand Segmentation
+## Hand Segmentation 🤌🏻
 
 Before training, all radiographs were segmented using **BiRefNet**, a state-of-the-art image segmentation model.
 
@@ -67,6 +68,8 @@ https://arxiv.org/abs/2401.03407
 
 https://github.com/ZhengPeng7/BiRefNet
 
+![Radiograph](notebook/model_results/radiograph.png)
+
 The repository also provides utility scripts to:
 
 - segment new datasets
@@ -74,7 +77,7 @@ The repository also provides utility scripts to:
 
 ---
 
-## Installation
+## Installation ⚙️
 
 Clone the repository:
 
@@ -97,7 +100,7 @@ python pip install .
 
 ---
 
-## Quick Start
+## Quick Start 🏃🏻‍♀️
 
 Predict the bone age of a new hand radiograph:
 
@@ -111,7 +114,7 @@ For additional examples, see the `demo/` notebook.
 
 ---
 
-## Pipeline
+## Pipeline 🚀
 
 The default inference pipeline consists of:
 
@@ -121,7 +124,7 @@ The default inference pipeline consists of:
 
 ---
 
-## Models Evaluated
+## Models Evaluated 📊
 
 Several approaches were investigated during the project.
 
@@ -147,11 +150,11 @@ As an alternative approach, handcrafted radiomics features were extracted from s
 
 ---
 
-## Repository Structure
+## Repository Structure 🏛️
 ```text
 BoneAge/
 │
-├── BoneAgeRegressor                # Package folder 
+├── BoneAgeRegressor/               # Package folder 
 │
 ├── data/                           # Dataset and raw images 
 │
@@ -164,11 +167,11 @@ BoneAge/
 │       ├── 04_cnn_torch_male_results.ipynb
 │       └── 05_ML.ipynb
 │
-├── scripts/                         # Utility scripts (training, evaluation, etc.)
+├── scripts/                         # Utility scripts 
 │
 ├── src/
 │   ├── config/                      # Configuration files
-│   ├── model/                       # ML/DL models
+│   ├── model/                       # DL models
 │   ├── preprocessing/               # Image preprocessing functions
 │   ├── utils/                       # Helper utilities
 │   ├── visualization/               # Plotting and visualization tools
@@ -180,7 +183,6 @@ BoneAge/
 ├── .gitignore
 ├── demo.ipynb                       # Demo for main usage
 ├── LICENSE
-├── main.py                          # Entry point for running the project
 ├── pyproject.toml                   # Project configuration and dependencies
 ├── README.md                        # Main documentation
 ├── requirements-radiomics.txt       # Python 3.8.10 for PyRadiomics
@@ -189,7 +191,7 @@ BoneAge/
 
 ---
 
-## API Overview
+## API Overview 🔍
 
 The source code is organized into reusable modules inside the `src/` package.
 
@@ -229,7 +231,7 @@ Contains the PyTorch training pipeline, including:
 
 ---
 
-## Utility Scripts
+## Utility Scripts 🚩
 
 The `scripts/` directory contains standalone utilities used during dataset preparation.
 
@@ -240,7 +242,7 @@ The `scripts/` directory contains standalone utilities used during dataset prepa
 
 ---
 
-## Notebooks
+## Notebooks 📚
 
 The notebooks document the main experimental stages of the project, from baseline training to model evaluation and radiomics analysis.
 
@@ -256,11 +258,11 @@ The notebooks document the main experimental stages of the project, from baselin
 In notebook `02_...`, both PyTorch CNN models are trained using the same training pipeline. The `train_model` function includes the `use_male` parameter: when `use_male=False`, the model is trained using only image information; when `use_male=True`, patient sex is included through the FiLM conditioning mechanism.
 
 ---
-## Environment setup
+## Environment setup 🍃
 
 This project uses two separate Python environments due to dependency compatibility requirements.
 
-### CNN environment
+### CNN environment 
 
 Used for the TensorFlow and PyTorch pipelines and requires:
 
@@ -277,7 +279,7 @@ Python 3.8.10
 ```
 ---
 
-## References
+## References ✒️
 
 **[1]**
 
@@ -302,4 +304,5 @@ Zheng, P., Gao, D., Fan, D.-P., Liu, L., Laaksonen, J., Ouyang, W., & Sebe, N.
 https://arxiv.org/abs/2401.03407
 
 https://github.com/ZhengPeng7/BiRefNet
+
 
