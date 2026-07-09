@@ -3,7 +3,7 @@ name = "BoneAgeRegressor"
 version = "0.1.0"
 description = "A pipeline for bone age prediction from hand RX images"
 authors = [
-    { name = "Silvio Draetta" }
+    { name = "Silvio Draetta" },
     { name = "Emilia Boschi" }
 ]
 readme = "README.md"

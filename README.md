@@ -92,7 +92,7 @@ python -r pip install requirements.txt
 Install the package:
 
 ```bash
-python -m pip install .
+python pip install .
 ```
 
 ---
@@ -102,8 +102,8 @@ python -m pip install .
 Predict the bone age of a new hand radiograph:
 
 ```bash
-python main.py \
-    --image data/PathToYourImage/image.png \
+python -m  BoneAgeRegressor \
+    --image PathToYourImage/image.png \
     --sex female
 ```
 
@@ -148,9 +148,10 @@ As an alternative approach, handcrafted radiomics features were extracted from s
 ---
 
 ## Repository Structure
-
 ```text
 BoneAge/
+│
+├── BoneAgeRegressor                # Package folder 
 │
 ├── data/                           # Dataset and raw images 
 │
@@ -168,7 +169,6 @@ BoneAge/
 ├── src/
 │   ├── config/                      # Configuration files
 │   ├── model/                       # ML/DL models
-│   ├── pipeline/                    # Pipeline orchestration modules
 │   ├── preprocessing/               # Image preprocessing functions
 │   ├── utils/                       # Helper utilities
 │   ├── visualization/               # Plotting and visualization tools
@@ -196,10 +196,6 @@ The source code is organized into reusable modules inside the `src/` package.
 ### `src.model`
 
 Contains the neural network architectures developed during the project, including the FiLM-based CNN model.
-
-### `src.pipeline`
-
-Contains the modules used by the main inference pipeline, including model loading and prediction utilities.
 
 ### `src.preprocessing`
 
@@ -270,6 +266,7 @@ Used for the TensorFlow and PyTorch pipelines and requires:
 
 ```text
 Python >= 3.10 
+```
 
 ### Radiomics environment
 
@@ -277,7 +274,7 @@ Used for the PyRadiomics pipeline and requires:
 
 ```text
 Python 3.8.10
-
+```
 ---
 
 ## References

@@ -7,7 +7,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import torch
 from transformers import AutoModelForImageSegmentation
-
 import contextlib
 import io
 

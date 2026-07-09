@@ -1,5 +1,5 @@
 import argparse
-from src.pipeline.inference import run_bone_age_inference
+from BoneAgeRegressor.pipeline.inference import run_bone_age_inference
 
 import warnings
 warnings.filterwarnings("ignore")
