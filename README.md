@@ -130,9 +130,9 @@ Several approaches were investigated during the project.
 
 | Model | Description | Test MAE (months)|
 |:------|:------------|---------:|
-| CNN (TensorFlow) | Trained on original images | **13.61** |
+| CNN (TensorFlow) | Trained and tested on original images | **13.61** |
 | CNN (TensorFlow) | Tested on segmented images | **22.68** |
-| CNN (PyTorch) | Trained on segmented images | **13.07** |
+| CNN (PyTorch) | Trained and tested on segmented images | **13.07** |
 | CNN (PyTorch) | Tested on original images | **16.18** |
 | CNN + FiLM | Segmented images + patient sex | **9.45** |
 | CNN + FiLM | Original images + patient sex | **18.52** |
