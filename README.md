@@ -89,13 +89,13 @@ cd Bone-Age-Regression-from-Hand-X-Ray-Images
 Install the requirements:
 
 ```bash
-python -r pip install requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Install the package:
 
 ```bash
-python pip install .
+python -m pip install .
 ```
 
 ---
@@ -130,12 +130,12 @@ Several approaches were investigated during the project.
 
 | Model | Description | Test MAE (months)|
 |:------|:------------|---------:|
-| CNN (TensorFlow) | Trained on original images | **13.61** |
+| CNN (TensorFlow) | Trained and tested on original images | **13.61** |
 | CNN (TensorFlow) | Tested on segmented images | **22.68** |
-| CNN (PyTorch) | Trained on segmented images | **13.07** |
+| CNN (PyTorch) | Trained and tested on segmented images | **13.07** |
 | CNN (PyTorch) | Tested on original images | **16.18** |
-| CNN + FiLM | Segmented images + patient sex | **9.45** |
-| CNN + FiLM | Original images + patient sex | **18.52** |
+| CNN + FiLM (PyTorch) | Segmented images + patient sex | **9.45** |
+| CNN + FiLM (PyTorch) | Original images + patient sex | **18.52** |
 | Random Forest + Radiomics | PyRadiomics features extracted from segmented images | **23.51** |
 
 The first TensorFlow model performed poorly on segmented images, suggesting that it relied on contextual information outside the hand, especially for younger patients.
