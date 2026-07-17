@@ -57,7 +57,9 @@ jobs:
       - name: Install radiomics dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install --only-binary=:all: SimpleITK==2.4.0
           python -m pip install -r requirements-radiomics.txt
+          python -m pip check
 
       - name: Run radiomics tests
         env:
