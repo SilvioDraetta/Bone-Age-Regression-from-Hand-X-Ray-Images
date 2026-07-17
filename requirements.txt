@@ -27,8 +27,8 @@ six==1.17.0
 termcolor==3.3.0
 wrapt==2.2.2
 
-torch==2.5.1+cu121
-torchvision==0.20.1+cu121
+torch==2.5.1
+torchvision==0.20.1
 
 transformers==5.12.1
 huggingface_hub==1.21.0
